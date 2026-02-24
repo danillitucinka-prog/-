@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}r/{{ subreddit.name }} - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="subreddit-container">
+    <div class="subreddit-header">
+        {% if subreddit.banner_url %}
+            <img src="{{ subreddit.banner_url }}" alt="{{ subreddit.name }}" class="subreddit-banner">
+        {% endif %}
+        
+        <div class="subreddit-info">
+            {% if subreddit.icon_url %}
+                <img src="{{ subreddit.icon_url }}" alt="{{ subreddit.name }}" class="subreddit-icon">
+            {% endif %}
+            
+            <div class="subreddit-header-text">
+                <h1>r/{{ subreddit.name }}</h1>
+                <p class="subreddit-title">{{ subreddit.title }}</p>
+                <p class="subreddit-description">{{ subreddit.description }}</p>
+                
+                <div class="subreddit-stats">
+                    <span class="stat">👥 {{ subreddit.member_count }} подписчиков</span>
+                    <span class="stat">📝 {{ subreddit.posts|length }} постов</span>
+                </div>
+                
+                {% if current_user.is_authenticated %}
+                    {% if current_user.is_in_community(subreddit) %}
+                        <form method="POST" action="{{ url_for('leave_subreddit', subreddit_name=subreddit.name) }}" style="display: inline;">
+                            <button class="btn btn-secondary">Выход</button>
+                        </form>
+                    {% else %}
+                        <form method="POST" action="{{ url_for('join_subreddit', subreddit_name=subreddit.name) }}" style="display: inline;">
+                            <button class="btn btn-primary">Присоединиться</button>
+                        </form>
+                    {% endif %}
+                    
+                    {% if subreddit.moderator_id == current_user.id %}
+                        <a href="{{ url_for('edit_subreddit', subreddit_name=subreddit.name) }}" class="btn btn-secondary">Управление</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    {% if subreddit.rules %}
+        <div class="subreddit-rules">
+            <h3>Правила сообщества</h3>
+            <div class="rules-content">{{ subreddit.rules }}</div>
+        </div>
+    {% endif %}
+    
+    <div class="sort-bar">
+        <a href="{{ url_for('view_subreddit', subreddit_name=subreddit.name, sort='hot') }}" class="sort-link {% if sort == 'hot' %}active{% endif %}">🔥 Горячее</a>
+        <a href="{{ url_for('view_subreddit', subreddit_name=subreddit.name, sort='new') }}" class="sort-link {% if sort == 'new' %}active{% endif %}">✨ Новое</a>
+        <a href="{{ url_for('view_subreddit', subreddit_name=subreddit.name, sort='top') }}" class="sort-link {% if sort == 'top' %}active{% endif %}">🏆 Топ</a>
+    </div>
+    
+    {% if posts.items %}
+        <div class="posts-list">
+            {% for post in posts.items %}
+                {% include "posts/post_item.html" %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-state">В этом сообществе еще нет постов</p>
+    {% endif %}
+</div>
+{% endblock %}

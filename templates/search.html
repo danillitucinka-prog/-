@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Поиск - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="search-container">
+    <h1>Поиск</h1>
+    
+    <form method="POST" class="form search-form-page">
+        {{ form.hidden_tag() }}
+        
+        <div class="search-input-group">
+            {{ form.q(class="form-control", placeholder="Что вы ищете?") }}
+            {{ form.search_type(class="form-control") }}
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+    
+    {% if results is not none %}
+        <div class="search-results">
+            {% if results %}
+                <h2>
+                    Результаты поиска
+                    {% if form.search_type.data == 'posts' %}
+                        по постам
+                    {% elif form.search_type.data == 'users' %}
+                        по пользователям
+                    {% else %}
+                        по сообществам
+                    {% endif %}
+                </h2>
+                
+                {% if form.search_type.data == 'posts' %}
+                    <div class="posts-list">
+                        {% for post in results %}
+                            {% include "posts/post_item.html" %}
+                        {% endfor %}
+                    </div>
+                
+                {% elif form.search_type.data == 'users' %}
+                    <div class="users-grid">
+                        {% for user in results %}
+                            <div class="user-card">
+                                <img src="{{ user.avatar_url }}" alt="{{ user.username }}" class="user-avatar-large">
+                                <h3><a href="{{ url_for('user_profile', username=user.username) }}">{{ user.username }}</a></h3>
+                                <p class="user-karma">💰 {{ user.karma }}</p>
+                                <p class="user-bio">{{ user.bio[:100] }}</p>
+                                {% if current_user.is_authenticated and current_user.id != user.id %}
+                                    <a href="{{ url_for('user_profile', username=user.username) }}" class="btn btn-secondary">Перейти</a>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                
+                {% else %}
+                    <div class="subreddits-grid">
+                        {% for subreddit in results %}
+                            <div class="subreddit-card">
+                                <h3><a href="{{ url_for('view_subreddit', subreddit_name=subreddit.name) }}">r/{{ subreddit.name }}</a></h3>
+                                <p class="subreddit-title">{{ subreddit.title }}</p>
+                                <p class="subreddit-members">{{ subreddit.member_count }} подписчиков</p>
+                                <a href="{{ url_for('view_subreddit', subreddit_name=subreddit.name) }}" class="btn btn-secondary">Посетить</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% else %}
+                <p class="empty-state">Ничего не найдено</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

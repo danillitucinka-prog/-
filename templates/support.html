@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+
+{% block title %}Поддержка проекта - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="support-container">
+    <div class="support-header">
+        <h1>💝 Поддержи проект</h1>
+        <p>Спасибо за интерес к PivooReddit!</p>
+    </div>
+    
+    <div class="support-content">
+        <!-- Финансовая поддержка -->
+        <section class="support-section">
+            <div class="section-card card-primary">
+                <h2>💰 Финансовая поддержка</h2>
+                <p>Помоги разработке через DonationAlerts:</p>
+                <a href="https://www.donationalerts.com/r/slava_donatus" target="_blank" class="btn btn-primary btn-large">
+                    🎁 Поддержать на DonationAlerts
+                </a>
+                <p class="support-info">Твой вклад идёт на:</p>
+                <ul class="support-list">
+                    <li>✅ Хостинг и серверы</li>
+                    <li>✅ БД и инфраструктуру</li>
+                    <li>✅ Разработку новых функций</li>
+                    <li>✅ Улучшение производительности</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- Безплатные способы -->
+        <section class="support-section">
+            <h2>⭐ Безплатные способы помочь</h2>
+            
+            <div class="support-grid">
+                <!-- GitHub Star -->
+                <div class="section-card">
+                    <h3>⭐ GitHub Star</h3>
+                    <p>Поставь звезду на GitHub!</p>
+                    <p class="small-text">Это помогает видимости проекта и привлекает новых пользователей.</p>
+                    <a href="https://github.com" target="_blank" class="btn btn-secondary">Перейти на GitHub</a>
+                </div>
+                
+                <!-- Поделись -->
+                <div class="section-card">
+                    <h3>📱 Поделись проектом</h3>
+                    <p>Расскажи друзьям о PivooReddit:</p>
+                    <ul class="share-list">
+                        <li>💬 В социальных сетях</li>
+                        <li>🔗 На своём сайте</li>
+                        <li>💭 В чатах и форумах</li>
+                        <li>📧 Друзьям по email</li>
+                    </ul>
+                </div>
+                
+                <!-- Баг репорты -->
+                <div class="section-card">
+                    <h3>🐛 Сообщай о багах</h3>
+                    <p>Помоги улучшить проект:</p>
+                    <ul class="share-list">
+                        <li>🔍 Найди ошибки</li>
+                        <li>💡 Предложи идеи</li>
+                        <li>📝 Улучши документацию</li>
+                        <li>🧪 Пиши тесты</li>
+                    </ul>
+                </div>
+                
+                <!-- Contributing -->
+                <div class="section-card">
+                    <h3>🔧 Исходный код</h3>
+                    <p>Помоги с разработкой:</p>
+                    <ul class="share-list">
+                        <li>🐛 Исправляй баги</li>
+                        <li>✨ Добавляй функции</li>
+                        <li>📚 Пиши тесты</li>
+                        <li>🎨 Улучшай дизайн</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Контакты -->
+        <section class="support-section">
+            <div class="section-card card-info">
+                <h2>📞 Связь с разработчиком</h2>
+                <div class="contact-methods">
+                    <p>
+                        <strong>Email:</strong> 
+                        <a href="mailto:admin@pivoreddit.com">admin@pivoreddit.com</a>
+                    </p>
+                    <p>
+                        <strong>Telegram:</strong> 
+                        <a href="https://t.me/pivoreddit" target="_blank">@pivoreddit</a>
+                    </p>
+                    <p>
+                        <strong>DonationAlerts:</strong> 
+                        <a href="https://www.donationalerts.com/r/slava_donatus" target="_blank">
+                            https://www.donationalerts.com/r/slava_donatus
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Спасибо -->
+        <section class="support-section">
+            <div class="thanks-card">
+                <h2>🙏 Спасибо!</h2>
+                <p>Спасибо всем, кто поддерживает этот проект!</p>
+                <p>Вы вдохновляете меня продолжать разработку и делать PivooReddit лучше каждый день.</p>
+                <p style="margin-top: 20px; font-size: 24px;">❤️</p>
+            </div>
+        </section>
+    </div>
+</div>
+
+<style>
+.support-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.support-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.support-header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.support-header p {
+    font-size: 1.2em;
+    color: var(--text-secondary);
+}
+
+.support-section {
+    margin-bottom: 40px;
+}
+
+.support-section h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+}
+
+.section-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.section-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.section-card h3 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.section-card p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.card-primary {
+    background: linear-gradient(135deg, var(--primary-color), rgba(52, 152, 219, 0.1));
+    border-color: var(--primary-color);
+}
+
+.card-info {
+    background: linear-gradient(135deg, var(--info-color), rgba(52, 160, 219, 0.1));
+    border-color: var(--info-color);
+}
+
+.btn-large {
+    padding: 15px 30px;
+    font-size: 1.1em;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.support-info {
+    font-weight: bold;
+    margin-top: 20px;
+    color: var(--text-primary);
+}
+
+.support-list {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+.support-list li {
+    padding: 8px 0;
+    color: var(--text-secondary);
+}
+
+.support-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.share-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.share-list li {
+    padding: 6px 0;
+    color: var(--text-secondary);
+}
+
+.contact-methods p {
+    margin-bottom: 15px;
+}
+
+.contact-methods a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-methods a:hover {
+    text-decoration: underline;
+    color: var(--primary-color-dark);
+}
+
+.thanks-card {
+    background: var(--success-bg);
+    border: 2px solid var(--success-color);
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+}
+
+.thanks-card h2 {
+    color: var(--success-color);
+    border: none;
+    margin-bottom: 15px;
+}
+
+.thanks-card p {
+    font-size: 1.1em;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.small-text {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .support-header h1 {
+        font-size: 2em;
+    }
+    
+    .support-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-card {
+        padding: 20px;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Админ-панель - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <h1>🔧 Админ-панель</h1>
+    
+    <div class="admin-stats">
+        <div class="stat-card">
+            <div class="stat-number">{{ user_count }}</div>
+            <div class="stat-label">Пользователей</div>
+            <a href="{{ url_for('admin_users') }}">Управление</a>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ post_count }}</div>
+            <div class="stat-label">Постов</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ comment_count }}</div>
+            <div class="stat-label">Комментариев</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ subreddit_count }}</div>
+            <div class="stat-label">Сообществ</div>
+        </div>
+    </div>
+    
+    <div class="admin-actions">
+        <a href="{{ url_for('admin_reports') }}" class="admin-link">Отчеты о нарушениях</a>
+        <a href="{{ url_for('admin_users') }}" class="admin-link">Управление пользователями</a>
+    </div>
+</div>
+{% endblock %}

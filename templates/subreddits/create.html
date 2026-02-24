@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Создать сообщество - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="create-subreddit-container">
+    <h1>Создать новое сообщество</h1>
+    
+    <form method="POST" class="form">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            <label for="name">Название (только латиница и цифры)</label>
+            <span class="prefix">r/</span>
+            {{ form.name(class="form-control", placeholder="my_community") }}
+            {% if form.name.errors %}
+                <div class="error">{{ form.name.errors[0] }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="title">Полное название</label>
+            {{ form.title(class="form-control", placeholder="Мое замечательное сообщество") }}
+            {% if form.title.errors %}
+                <div class="error">{{ form.title.errors[0] }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Описание</label>
+            {{ form.description(class="form-control", rows="4", placeholder="Расскажите о вашем сообществе...") }}
+        </div>
+        
+        <div class="form-check">
+            {{ form.is_private(class="form-check-input") }}
+            <label class="form-check-label">Приватное сообщество (только приглашенные)</label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Создать сообщество</button>
+    </form>
+</div>
+{% endblock %}

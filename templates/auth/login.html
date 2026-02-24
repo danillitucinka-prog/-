@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Логин - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-box">
+        <h1>Вход в PivooReddit</h1>
+        
+        <form method="POST" class="form">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+                <label for="username">Ник пользователя</label>
+                {{ form.username(class="form-control") }}
+                {% if form.username.errors %}
+                    <div class="error">{{ form.username.errors[0] }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                {{ form.password(class="form-control") }}
+                {% if form.password.errors %}
+                    <div class="error">{{ form.password.errors[0] }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-check">
+                {{ form.remember_me(class="form-check-input") }}
+                <label class="form-check-label">Помнить меня</label>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">Войти</button>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Нет аккаунта? <a href="{{ url_for('register') }}">Зарегистрируйтесь</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

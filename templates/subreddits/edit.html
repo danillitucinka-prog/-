@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Редактировать сообщество - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="edit-subreddit-container">
+    <h1>Редактировать r/{{ subreddit.name }}</h1>
+    
+    <form method="POST" class="form">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            <label for="title">Полное название</label>
+            {{ form.title(class="form-control") }}
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Описание</label>
+            {{ form.description(class="form-control", rows="4") }}
+        </div>
+        
+        <div class="form-group">
+            <label for="rules">Правила (каждое с новой строки)</label>
+            {{ form.rules(class="form-control", rows="6") }}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
+{% endblock %}

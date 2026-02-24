@@ -1,0 +1,70 @@
+<div class="post-card">
+    <div class="post-vote-section">
+        {% if current_user.is_authenticated %}
+            <form method="POST" action="{{ url_for('upvote_post', post_id=post.id) }}" class="vote-form upvote-form">
+                <button class="vote-btn upvote-btn" title="Лайк">▲</button>
+                <span class="vote-count">{{ post.upvotes }}</span>
+            </form>
+            <form method="POST" action="{{ url_for('downvote_post', post_id=post.id) }}" class="vote-form downvote-form">
+                <button class="vote-btn downvote-btn" title="Дизлайк">▼</button>
+                <span class="vote-count">{{ post.downvotes }}</span>
+            </form>
+        {% else %}
+            <div class="vote-display">
+                <span class="vote-count-display">{{ post.upvotes }}</span>
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="post-content">
+        <div class="post-header">
+            <span class="post-subreddit">r/{{ post.subreddit.name }}</span>
+            <span class="post-author">
+                <a href="{{ url_for('user_profile', username=post.author.username) }}">u/{{ post.author.username }}</a>
+            </span>
+            <span class="post-time">{{ post.created_at|timesince }}</span>
+            {% if post.flair %}
+                <span class="post-flair">{{ post.flair }}</span>
+            {% endif %}
+        </div>
+        
+        <h3 class="post-title">
+            <a href="{{ url_for('view_post', post_id=post.id) }}">{{ post.title }}</a>
+        </h3>
+        
+        {% if post.content %}
+            <p class="post-preview">{{ post.get_preview_text(150) }}</p>
+        {% endif %}
+        
+        {% if post.url and post.content_type != 'text' %}
+            {% if post.content_type == 'image' %}
+                <a href="{{ url_for('view_post', post_id=post.id) }}">
+                    <img src="{{ post.url }}" alt="{{ post.title }}" class="post-preview-image">
+                </a>
+            {% else %}
+                <a href="{{ post.url }}" target="_blank" class="post-link">🔗 {{ post.url|truncate(50) }}</a>
+            {% endif %}
+        {% endif %}
+        
+        <div class="post-footer">
+            <a href="{{ url_for('view_post', post_id=post.id) }}" class="post-action">
+                💬 {{ post.comment_count }} комментариев
+            </a>
+            <span class="post-views">👁 {{ post.views }} просмотров</span>
+            
+            {% if current_user.is_authenticated %}
+                {% if current_user.is_post_saved(post) %}
+                    <form method="POST" action="{{ url_for('unsave_post', post_id=post.id) }}" style="display: inline;">
+                        <button class="post-action saved">🔖 Сохранено</button>
+                    </form>
+                {% else %}
+                    <form method="POST" action="{{ url_for('save_post', post_id=post.id) }}" style="display: inline;">
+                        <button class="post-action">🔖 Сохранить</button>
+                    </form>
+                {% endif %}
+                
+                <a href="{{ url_for('report_post', post_id=post.id) }}" class="post-action">⚠️ Отчет</a>
+            {% endif %}
+        </div>
+    </div>
+</div>

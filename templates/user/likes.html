@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Лайки - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="likes-container">
+    <h1>👍 Ваши лайки</h1>
+    
+    {% if posts.items %}
+        <div class="posts-list">
+            {% for post in posts.items %}
+                {% include "posts/post_item.html" %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-state">Вы еще не лайкнули ни один пост</p>
+    {% endif %}
+</div>
+{% endblock %}

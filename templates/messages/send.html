@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Отправить сообщение - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="send-message-container">
+    <h1>Отправить сообщение</h1>
+    
+    <form method="POST" class="form">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            <label for="recipient">Кому</label>
+            {{ form.recipient(class="form-control", readonly=true) }}
+        </div>
+        
+        <div class="form-group">
+            <label for="subject">Тема</label>
+            {{ form.subject(class="form-control", placeholder="Необязательно") }}
+        </div>
+        
+        <div class="form-group">
+            <label for="content">Сообщение</label>
+            {{ form.content(class="form-control", rows="6", placeholder="Напишите ваше сообщение...") }}
+            {% if form.content.errors %}
+                <div class="error">{{ form.content.errors[0] }}</div>
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Отправить</button>
+        <a href="{{ url_for('messages') }}" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="post-view-container">
+    <div class="post-view">
+        <div class="post-vote-section">
+            {% if current_user.is_authenticated %}
+                <form method="POST" action="{{ url_for('upvote_post', post_id=post.id) }}" class="vote-form upvote-form">
+                    <button class="vote-btn upvote-btn" title="Лайк">▲</button>
+                </form>
+                <span class="vote-count-large">{{ post.upvotes - post.downvotes }}</span>
+                <form method="POST" action="{{ url_for('downvote_post', post_id=post.id) }}" class="vote-form downvote-form">
+                    <button class="vote-btn downvote-btn" title="Дизлайк">▼</button>
+                </form>
+            {% else %}
+                <span class="vote-count-large">{{ post.upvotes - post.downvotes }}</span>
+            {% endif %}
+        </div>
+        
+        <div class="post-full-content">
+            <div class="post-header-full">
+                <div class="post-subreddit-full">r/{{ post.subreddit.name }}</div>
+                <h1 class="post-title-full">{{ post.title }}</h1>
+                
+                <div class="post-meta">
+                    <span class="post-author">
+                        <img src="{{ post.author.avatar_url }}" alt="{{ post.author.username }}" class="meta-avatar">
+                        <a href="{{ url_for('user_profile', username=post.author.username) }}">u/{{ post.author.username }}</a>
+                    </span>
+                    <span class="post-time">{{ post.created_at|timesince }}</span>
+                    <span class="post-views">👁 {{ post.views }} просмотров</span>
+                </div>
+            </div>
+            
+            <div class="post-body">
+                {% if post.content_type == 'text' %}
+                    <div class="post-text">{{ post.content }}</div>
+                {% elif post.content_type == 'image' %}
+                    <img src="{{ post.url }}" alt="{{ post.title }}" class="post-full-image">
+                {% elif post.content_type == 'link' %}
+                    <p class="post-link-box">
+                        <a href="{{ post.url }}" target="_blank" class="link-icon">🔗</a>
+                        <a href="{{ post.url }}" target="_blank" class="link-text">{{ post.url }}</a>
+                    </p>
+                {% endif %}
+            </div>
+            
+            <div class="post-actions-full">
+                {% if current_user.is_authenticated %}
+                    {% if current_user.is_post_saved(post) %}
+                        <form method="POST" action="{{ url_for('unsave_post', post_id=post.id) }}" style="display: inline;">
+                            <button class="action-btn saved">🔖 Сохранено</button>
+                        </form>
+                    {% else %}
+                        <form method="POST" action="{{ url_for('save_post', post_id=post.id) }}" style="display: inline;">
+                            <button class="action-btn">🔖 Сохранить</button>
+                        </form>
+                    {% endif %}
+                    
+                    {% if post.author_id == current_user.id or current_user.role == 'admin' %}
+                        <a href="{{ url_for('edit_post', post_id=post.id) }}" class="action-btn">✏️ Редактировать</a>
+                        <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}" style="display: inline;">
+                            <button class="action-btn danger" onclick="return confirm('Удалить пост?');">🗑️ Удалить</button>
+                        </form>
+                    {% endif %}
+                    
+                    <a href="{{ url_for('report_post', post_id=post.id) }}" class="action-btn">⚠️ Отчет</a>
+                {% else %}
+                    <p class="login-prompt"><a href="{{ url_for('login') }}">Войдите</a> чтобы взаимодействовать с постом</p>
+                {% endif %}
+            </div>
+            
+            {% if post.updated_at != post.created_at %}
+                <div class="post-edited">
+                    Отредактировано {{ post.updated_at|timesince }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="comments-section">
+        <h2>Комментарии ({{ post.comment_count }})</h2>
+        
+        {% if current_user.is_authenticated %}
+            <div class="comment-form-box">
+                <form method="POST" action="{{ url_for('create_comment', post_id=post.id) }}" class="form">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="form-group">
+                        {{ form.content(class="form-control", placeholder="Ваш комментарий...", rows="3") }}
+                        {% if form.content.errors %}
+                            <div class="error">{{ form.content.errors[0] }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Комментировать</button>
+                </form>
+            </div>
+        {% else %}
+            <p class="login-prompt"><a href="{{ url_for('login') }}">Войдите</a> чтобы оставить комментарий</p>
+        {% endif %}
+        
+        <div class="sort-bar">
+            <a href="{{ url_for('view_post', post_id=post.id, sort='best') }}" class="sort-link {% if sort == 'best' %}active{% endif %}">Лучшие</a>
+            <a href="{{ url_for('view_post', post_id=post.id, sort='new') }}" class="sort-link {% if sort == 'new' %}active{% endif %}">Новые</a>
+            <a href="{{ url_for('view_post', post_id=post.id, sort='top') }}" class="sort-link {% if sort == 'top' %}active{% endif %}">Топ</a>
+            <a href="{{ url_for('view_post', post_id=post.id, sort='old') }}" class="sort-link {% if sort == 'old' %}active{% endif %}">Старые</a>
+        </div>
+        
+        {% if comments.items %}
+            <div class="comments-list">
+                {% for comment in comments.items %}
+                    {% include "posts/comment_item.html" %}
+                {% endfor %}
+            </div>
+            
+            {% if comments.pages > 1 %}
+                <div class="pagination">
+                    {% if comments.has_prev %}
+                        <a href="{{ url_for('view_post', post_id=post.id, page=comments.prev_num, sort=sort) }}" class="pagination-link">← Предыдущая</a>
+                    {% endif %}
+                    
+                    <span class="pagination-info">Страница {{ comments.page }} из {{ comments.pages }}</span>
+                    
+                    {% if comments.has_next %}
+                        <a href="{{ url_for('view_post', post_id=post.id, page=comments.next_num, sort=sort) }}" class="pagination-link">Следующая →</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% else %}
+            <p class="empty-state">Пока нет комментариев. Будьте первым!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

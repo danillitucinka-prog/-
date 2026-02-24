@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.username }} - Профиль - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <img src="{{ user.avatar_url }}" alt="{{ user.username }}" class="profile-avatar">
+        <div class="profile-info">
+            <div class="profile-header-top">
+                <h1>{{ user.username }}</h1>
+                {% if user.is_verified %}
+                    <span class="verified-badge" title="Верифицированный пользователь">✓</span>
+                {% endif %}
+                {% if user.is_online %}
+                    <span class="online-badge">Онлайн</span>
+                {% endif %}
+            </div>
+            
+            {% if user.bio %}
+                <p class="profile-bio">{{ user.bio }}</p>
+            {% endif %}
+            
+            <div class="profile-stats">
+                <div class="stat">
+                    <div class="stat-value">{{ user.karma }}</div>
+                    <div class="stat-label">Карма</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">{{ user.posts|length }}</div>
+                    <div class="stat-label">Постов</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">{{ user.followers|length }}</div>
+                    <div class="stat-label">Подписчиков</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">{{ user.level }}</div>
+                    <div class="stat-label">Уровень</div>
+                </div>
+            </div>
+            
+            <div class="profile-dates">
+                <p>Зарегистрирован: <strong>{{ user.created_at|timesince }}</strong></p>
+                {% if user.last_login %}
+                    <p>Последний вход: <strong>{{ user.last_login|timesince }}</strong></p>
+                {% endif %}
+            </div>
+            
+            {% if current_user.is_authenticated and current_user.id != user.id %}
+                <div class="profile-actions">
+                    {% if current_user.is_following(user) %}
+                        <form method="POST" action="{{ url_for('unfollow_user', username=user.username) }}" style="display: inline;">
+                            <button class="btn btn-secondary">Отписаться</button>
+                        </form>
+                    {% else %}
+                        <form method="POST" action="{{ url_for('follow_user', username=user.username) }}" style="display: inline;">
+                            <button class="btn btn-primary">Подписаться</button>
+                        </form>
+                    {% endif %}
+                    
+                    <a href="{{ url_for('send_message', username=user.username) }}" class="btn btn-secondary">Сообщение</a>
+                    
+                    {% if current_user.is_blocking(user) %}
+                        <form method="POST" action="{{ url_for('unblock_user', username=user.username) }}" style="display: inline;">
+                            <button class="btn btn-outline">Разблокировать</button>
+                        </form>
+                    {% else %}
+                        <form method="POST" action="{{ url_for('block_user', username=user.username) }}" style="display: inline;">
+                            <button class="btn btn-outline">Заблокировать</button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% endif %}
+            
+            {% if current_user.is_authenticated and current_user.id == user.id %}
+                <div class="profile-actions">
+                    <a href="{{ url_for('settings') }}" class="btn btn-primary">Редактировать профиль</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="profile-content">
+        <h2>Посты {{ user.username }}</h2>
+        
+        {% if posts.items %}
+            <div class="posts-list">
+                {% for post in posts.items %}
+                    {% include "posts/post_item.html" %}
+                {% endfor %}
+            </div>
+            
+            {% if posts.pages > 1 %}
+                <div class="pagination">
+                    {% if posts.has_prev %}
+                        <a href="{{ url_for('user_profile', username=user.username, page=posts.prev_num) }}" class="pagination-link">← Предыдущая</a>
+                    {% endif %}
+                    
+                    <span class="pagination-info">Страница {{ posts.page }} из {{ posts.pages }}</span>
+                    
+                    {% if posts.has_next %}
+                        <a href="{{ url_for('user_profile', username=user.username, page=posts.next_num) }}" class="pagination-link">Следующая →</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% else %}
+            <p class="empty-state">Этот пользователь еще не создал постов</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+<div class="comment-item">
+    <div class="comment-vote-section">
+        {% if current_user.is_authenticated %}
+            <form method="POST" action="{{ url_for('upvote_comment', comment_id=comment.id) }}" class="vote-form mini">
+                <button class="vote-btn-mini">▲</button>
+            </form>
+            <span class="vote-count-mini">{{ comment.upvotes - comment.downvotes }}</span>
+            <form method="POST" action="{{ url_for('downvote_comment', comment_id=comment.id) }}" class="vote-form mini">
+                <button class="vote-btn-mini">▼</button>
+            </form>
+        {% else %}
+            <span class="vote-count-mini">{{ comment.upvotes - comment.downvotes }}</span>
+        {% endif %}
+    </div>
+    
+    <div class="comment-content">
+        <div class="comment-header">
+            <div class="comment-author">
+                <img src="{{ comment.author.avatar_url }}" alt="{{ comment.author.username }}" class="comment-avatar">
+                <a href="{{ url_for('user_profile', username=comment.author.username) }}" class="comment-username">
+                    {{ comment.author.username }}
+                </a>
+                {% if comment.author.is_verified %}
+                    <span class="verified-badge-small">✓</span>
+                {% endif %}
+            </div>
+            <span class="comment-time">{{ comment.created_at|timesince }}</span>
+        </div>
+        
+        {% if not comment.is_deleted %}
+            <div class="comment-text">{{ comment.content }}</div>
+        {% else %}
+            <div class="comment-text deleted">[Комментарий удален]</div>
+        {% endif %}
+        
+        {% if not comment.is_deleted %}
+            <div class="comment-actions">
+                {% if current_user.is_authenticated and (comment.author_id == current_user.id or current_user.role == 'admin') %}
+                    <form method="POST" action="{{ url_for('delete_comment', comment_id=comment.id) }}" style="display: inline;">
+                        <button class="comment-action-btn" onclick="return confirm('Удалить комментарий?');">🗑️ Удалить</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% endif %}
+        
+        {% if comment.replies %}
+            <div class="comment-replies">
+                {% for reply in comment.replies %}
+                    {% include "posts/comment_item.html" with comment=reply %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>

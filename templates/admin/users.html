@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Управление пользователями - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="admin-users-container">
+    <h1>Управление пользователями</h1>
+    
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Пользователь</th>
+                <th>Email</th>
+                <th>Карма</th>
+                <th>Статус</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users.items %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('user_profile', username=user.username) }}">{{ user.username }}</a>
+                    </td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.karma }}</td>
+                    <td>
+                        {% if user.is_banned %}
+                            <span class="badge-danger">Заблокирован</span>
+                        {% else %}
+                            <span class="badge-success">Активен</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if user.is_banned %}
+                            <form method="POST" action="{{ url_for('unban_user', user_id=user.id) }}" style="display: inline;">
+                                <button class="btn btn-small btn-primary">Разблокировать</button>
+                            </form>
+                        {% else %}
+                            <form method="POST" action="{{ url_for('ban_user', user_id=user.id) }}" style="display: inline;">
+                                <button class="btn btn-small btn-danger" onclick="return confirm('Заблокировать этого пользователя?');">Заблокировать</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    {% if users.pages > 1 %}
+        <div class="pagination">
+            {% if users.has_prev %}
+                <a href="{{ url_for('admin_users', page=users.prev_num) }}" class="pagination-link">← Предыдущая</a>
+            {% endif %}
+            
+            <span class="pagination-info">Страница {{ users.page }} из {{ users.pages }}</span>
+            
+            {% if users.has_next %}
+                <a href="{{ url_for('admin_users', page=users.next_num) }}" class="pagination-link">Следующая →</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

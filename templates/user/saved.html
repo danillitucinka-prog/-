@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Сохраненные посты - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="saved-posts-container">
+    <h1>📌 Сохраненные посты</h1>
+    
+    {% if posts.items %}
+        <div class="posts-list">
+            {% for post in posts.items %}
+                {% include "posts/post_item.html" %}
+            {% endfor %}
+        </div>
+        
+        {% if posts.pages > 1 %}
+            <div class="pagination">
+                {% if posts.has_prev %}
+                    <a href="{{ url_for('user_saved_posts', username=user.username, page=posts.prev_num) }}" class="pagination-link">← Предыдущая</a>
+                {% endif %}
+                
+                <span class="pagination-info">Страница {{ posts.page }} из {{ posts.pages }}</span>
+                
+                {% if posts.has_next %}
+                    <a href="{{ url_for('user_saved_posts', username=user.username, page=posts.next_num) }}" class="pagination-link">Следующая →</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% else %}
+        <p class="empty-state">Вы еще не сохранили ни одного поста</p>
+    {% endif %}
+</div>
+{% endblock %}

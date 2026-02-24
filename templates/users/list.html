@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Пользователи - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="users-container">
+    <h1>Пользователи</h1>
+    
+    <div class="sort-bar">
+        <a href="{{ url_for('users_list', sort='karma') }}" class="sort-link {% if sort == 'karma' %}active{% endif %}">💰 По карме</a>
+        <a href="{{ url_for('users_list', sort='created_at') }}" class="sort-link {% if sort == 'created_at' %}active{% endif %}">✨ По дате</a>
+        <a href="{{ url_for('users_list', sort='followers') }}" class="sort-link {% if sort == 'followers' %}active{% endif %}">👥 По подписчикам</a>
+    </div>
+    
+    {% if users.items %}
+        <div class="users-grid">
+            {% for user in users.items %}
+                <div class="user-card">
+                    <img src="{{ user.avatar_url }}" alt="{{ user.username }}" class="user-avatar-large">
+                    <h3>
+                        <a href="{{ url_for('user_profile', username=user.username) }}">{{ user.username }}</a>
+                        {% if user.is_verified %}
+                            <span class="verified-badge">✓</span>
+                        {% endif %}
+                    </h3>
+                    
+                    <div class="user-stats">
+                        <span class="stat">💰 {{ user.karma }}</span>
+                        <span class="stat">👥 {{ user.followers|length }}</span>
+                    </div>
+                    
+                    {% if user.bio %}
+                        <p class="user-bio">{{ user.bio[:100] }}</p>
+                    {% endif %}
+                    
+                    <a href="{{ url_for('user_profile', username=user.username) }}" class="btn btn-secondary">Профиль</a>
+                </div>
+            {% endfor %}
+        </div>
+        
+        {% if users.pages > 1 %}
+            <div class="pagination">
+                {% if users.has_prev %}
+                    <a href="{{ url_for('users_list', page=users.prev_num, sort=sort) }}" class="pagination-link">← Предыдущая</a>
+                {% endif %}
+                
+                <span class="pagination-info">Страница {{ users.page }} из {{ users.pages }}</span>
+                
+                {% if users.has_next %}
+                    <a href="{{ url_for('users_list', page=users.next_num, sort=sort) }}" class="pagination-link">Следующая →</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% else %}
+        <p class="empty-state">Пока нет пользователей</p>
+    {% endif %}
+</div>
+{% endblock %}

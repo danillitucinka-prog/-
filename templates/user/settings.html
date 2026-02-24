@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Редактировать профиль - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <h1>Настройки профиля</h1>
+    
+    <form method="POST" class="form">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            <label for="bio">Биография</label>
+            {{ form.bio(class="form-control", rows="4", placeholder="Расскажите о себе...") }}
+            <small>Максимум 500 символов</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="avatar_url">URL аватарки</label>
+            {{ form.avatar_url(class="form-control", placeholder="https://...") }}
+        </div>
+        
+        <div class="form-group">
+            <label for="language">Язык</label>
+            {{ form.language(class="form-control") }}
+        </div>
+        
+        <div class="form-check">
+            {{ form.dark_mode(class="form-check-input") }}
+            <label class="form-check-label">Включить темную тему</label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a href="{{ url_for('change_password') }}" class="btn btn-secondary">Изменить пароль</a>
+    </form>
+    
+    <div class="danger-zone">
+        <h2>Опасная зона</h2>
+        <p>Будьте осторожны с этими действиями - они необратимы.</p>
+        
+        <div class="delete-account-section">
+            <h3>Удалить аккаунт</h3>
+            <p>Это действие нельзя отменить. Все ваши данные будут удалены.</p>
+            
+            <form method="POST" action="{{ url_for('delete_account') }}" onsubmit="return confirm('Вы уверены? Это нельзя отменить!');">
+                <input type="password" name="password" placeholder="Подтвердите пароль" required class="form-control">
+                <button type="submit" class="btn btn-danger">Удалить аккаунт</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

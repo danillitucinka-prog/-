@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Отчеты о нарушениях - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="admin-reports-container">
+    <h1>Отчеты о нарушениях</h1>
+    
+    {% if reports.items %}
+        <div class="reports-list">
+            {% for report in reports.items %}
+                <div class="report-card">
+                    <div class="report-header">
+                        <span class="report-reason">{{ report.reason }}</span>
+                        <span class="report-date">{{ report.created_at|timesince }}</span>
+                    </div>
+                    
+                    {% if report.post %}
+                        <div class="report-content">
+                            <strong>Пост:</strong> {{ report.post.title[:100] }}...
+                            <br>
+                            <strong>Автор:</strong> {{ report.post.author.username }}
+                            <br>
+                            <strong>Причина:</strong> {{ report.description }}
+                        </div>
+                    {% elif report.comment %}
+                        <div class="report-content">
+                            <strong>Комментарий:</strong> {{ report.comment.content[:100] }}...
+                            <br>
+                            <strong>Автор:</strong> {{ report.comment.author.username }}
+                            <br>
+                            <strong>Причина:</strong> {{ report.description }}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="report-actions">
+                        <a href="#" class="btn btn-small btn-primary">Рассмотреть</a>
+                        <form method="POST" action="{{ url_for('dismiss_report', report_id=report.id) }}" style="display: inline;">
+                            <button class="btn btn-small btn-secondary">Отклонить</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="empty-state">Новых отчетов нет</p>
+    {% endif %}
+</div>
+{% endblock %}

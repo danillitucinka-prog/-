@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Создать пост - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="create-post-container">
+    <h1>📝 Создать новый пост</h1>
+    
+    <form method="POST" class="form post-form">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            <label for="title">Заголовок</label>
+            {{ form.title(class="form-control", placeholder="Интересный заголовок...") }}
+            {% if form.title.errors %}
+                <div class="error">{{ form.title.errors[0] }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="subreddit">Сообщество</label>
+                {{ form.subreddit(class="form-control") }}
+                {% if form.subreddit.errors %}
+                    <div class="error">{{ form.subreddit.errors[0] }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="content_type">Тип контента</label>
+                {{ form.content_type(class="form-control", id="content_type") }}
+            </div>
+        </div>
+        
+        <div class="form-group" id="content_section" style="display: none;">
+            <label for="content">Содержание (Markdown поддерживается)</label>
+            {{ form.content(class="form-control", rows="6", placeholder="Напишите ваше сообщение...") }}
+        </div>
+        
+        <div class="form-group" id="url_section" style="display: none;">
+            <label for="url">URL ссылки</label>
+            {{ form.url(class="form-control", placeholder="https://...") }}
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="flair">Флейр (теги)</label>
+                {{ form.flair(class="form-control", placeholder="Например: Вопрос") }}
+            </div>
+            
+            <div class="form-group">
+                <label for="tags">Теги (через запятую)</label>
+                {{ form.tags(class="form-control", placeholder="python, javascript, code") }}
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Опубликовать</button>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+
+<script>
+document.getElementById('content_type').addEventListener('change', function() {
+    const type = this.value;
+    document.getElementById('content_section').style.display = type === 'text' ? 'block' : 'none';
+    document.getElementById('url_section').style.display = type === 'link' || type === 'image' ? 'block' : 'none';
+});
+// Инициализация при загрузке
+document.getElementById('content_type').dispatchEvent(new Event('change'));
+</script>
+{% endblock %}

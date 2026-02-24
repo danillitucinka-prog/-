@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-box">
+        <h1>Регистрация на PivooReddit</h1>
+        
+        <form method="POST" class="form">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+                <label for="username">Ник пользователя</label>
+                {{ form.username(class="form-control") }}
+                {% if form.username.errors %}
+                    <div class="error">{{ form.username.errors[0] }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                {{ form.email(class="form-control", type="email") }}
+                {% if form.email.errors %}
+                    <div class="error">{{ form.email.errors[0] }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                {{ form.password(class="form-control") }}
+                {% if form.password.errors %}
+                    <div class="error">{{ form.password.errors[0] }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="password_confirm">Подтвердите пароль</label>
+                {{ form.password_confirm(class="form-control") }}
+                {% if form.password_confirm.errors %}
+                    <div class="error">{{ form.password_confirm.errors[0] }}</div>
+                {% endif %}
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
+        </form>
+        
+        <div class="auth-footer">
+            <p>Уже есть аккаунт? <a href="{{ url_for('login') }}">Войдите</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Сообщение - PivooReddit{% endblock %}
+
+{% block content %}
+<div class="message-view-container">
+    <a href="{{ url_for('messages') }}" class="btn btn-secondary">← Назад</a>
+    
+    <div class="message-view">
+        <div class="message-header-full">
+            <div class="message-from">
+                <img src="{{ message.sender.avatar_url }}" alt="{{ message.sender.username }}" class="message-avatar-large">
+                <div>
+                    <h2>{{ message.sender.username }}</h2>
+                    <p class="message-time">{{ message.created_at|timesince }}</p>
+                </div>
+            </div>
+        </div>
+        
+        {% if message.subject %}
+            <h3 class="message-subject-line">{{ message.subject }}</h3>
+        {% endif %}
+        
+        <div class="message-body">
+            {{ message.content }}
+        </div>
+        
+        <div class="message-actions">
+            <a href="{{ url_for('send_message', username=message.sender.username) }}" class="btn btn-primary">Ответить</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
