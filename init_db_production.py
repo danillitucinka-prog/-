@@ -35,7 +35,7 @@ def init_production_db():
                 print("\n👤 Создание admin пользователя...")
                 admin = User(
                     username='admin',
-                    email='admin@pivoreddit.com',
+                    email='admin@beerfield.com',
                     role='admin',
                     is_verified=True
                 )

@@ -26,7 +26,7 @@ def init_database():
         print("👤 Создание администратора...")
         admin = User(
             username='admin',
-            email='admin@pivoreddit.com',
+            email='admin@beerfield.com',
             role='admin',
             karma=1000,
             is_verified=True,
@@ -44,7 +44,7 @@ def init_database():
         for i, username in enumerate(usernames):
             user = User(
                 username=username,
-                email=f'{username}@pivoreddit.com',
+                email=f'{username}@beerfield.com',
                 role='user' if i % 3 != 0 else 'moderator',
                 karma=random.randint(10, 500),
                 is_verified=i % 2 == 0,

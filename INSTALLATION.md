@@ -171,10 +171,10 @@ DEFAULT_LANGUAGE = 'ru'  # или 'en'
 SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'
 
 # PostgreSQL (требует установки)
-SQLALCHEMY_DATABASE_URI = 'postgresql://user:password@localhost/pivoreddit'
+SQLALCHEMY_DATABASE_URI = 'postgresql://user:password@localhost/beerfield'
 
 # MySQL (требует установки)
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://user:password@localhost/pivoreddit'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://user:password@localhost/beerfield'
 ```
 
 ---
@@ -326,5 +326,5 @@ python init_db.py
 
 ---
 
-Спасибо за использование PivooReddit
+Спасибо за использование Beer Field
 

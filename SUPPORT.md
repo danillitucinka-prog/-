@@ -1,8 +1,8 @@
-# 💝 Поддержка проекта PivooReddit
+# 💝 Поддержка проекта Beer Field
 
 ## Как помочь проекту?
 
-Спасибо за интерес к проекту! Если тебе нравится PivooReddit и ты хочешь поддержать его развитие, есть несколько способов это сделать.
+Спасибо за интерес к проекту! Если тебе нравится Beer Field и ты хочешь поддержать его развитие, есть несколько способов это сделать.
 
 ---
 
@@ -48,8 +48,8 @@
 
 **Как начать:**
 ```bash
-git clone https://github.com/YOUR_USER/pivoreddit.git
-cd pivoreddit
+git clone https://github.com/YOUR_USER/beerfield.git
+cd beerfield
 git checkout -b feature/my-feature
 # Делай изменения
 git push origin feature/my-feature
@@ -94,8 +94,8 @@ git push origin feature/my-feature
 
 ## 📞 Связь с разработчиком
 
-- **Email:** admin@pivoreddit.com
-- **Telegram:** @pivoreddit
+- **Email:** admin@beerfield.com
+- **Telegram:** @beerfield
 - **GitHub:** github.com/slava_donatus
 - **DonationAlerts:** https://www.donationalerts.com/r/slava_donatus
 
